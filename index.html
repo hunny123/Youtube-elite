@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Youtubelite</title>
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+</head>
+<style>
+.d31 {
+  text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9,
+    0 5px 0 #aaa, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
+    0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2),
+    0 20px 20px rgba(0, 0, 0, 0.15);
+}
+.pulse {
+    animation-name: pulse_animation;
+    animation-duration: 2000ms;
+    transform-origin:70% 70%;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}@keyframes pulse_animation {
+    0% { transform: scale(1); }
+    30% { transform: scale(1); }
+    40% { transform: scale(1.08); }
+    50% { transform: scale(1); }
+    60% { transform: scale(1); }
+    70% { transform: scale(1.05); }
+    80% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+.head{
+background:url("https://camo.envatousercontent.com/3d71134ce1da2ae3abe1d800b899e6ddb6a9fb17/687474703a2f2f6d656d626572732e636173656d612e6e6c2f68616e732e62726f657273652f566964656f686976652f796f75322e706e67");
+color:white;
+background-repeat: no-repeat;
+background-position: right;
+background-color: #D32322!important;
+font-weight: bold;
+}
+.jumbotron{
+	background-color: white;
+}
+ .preloader{
+    	position:fixed;
+    	width:100%;
+        height:100%;
+        background:black;
+        top:0px;
+        left:0px;
+        z-index: 9000;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items: center;
+    }
+    .loader{
+    	width: 200px;
+    	height:100px;
+    	border:1 px solid red;
+    	top:-100px;
+    	left:-60px;
+    	position: relative;
+    	padding:20px;
+    }
+    .loader img{
+    	height:250px;
+    	width:250px;
+    }
+    .loader:after{
+    	content: "Youtube lite";
+    	position: absolute;
+    	bottom:-200px;;
+    	left:100px;
+    	font-size:20px;
+    	letter-spacing: .1em;
+    	width: 100%;
+    	text-align:center;
+    	color:white;
+    }
+ 
+   
+    .col-lg-4 h4,h5{
+     font-weight: bold;
+    }
+    .col-lg-4{
+    	border:none;
+
+    }
+.cont1{
+	display:none;
+}
+
+</style>
+<body>
+
+	<div class="jumbotron head d31">
+		<h1 > Youtube lite</h1>
+        
+
+		</div>
+		
+		<input type="text" class="search ml-5" placeholder="search"> <button class="btn ml-2 btn-danger so">search</button>
+		<div class="container cont1">
+			<div class="jumbotron"> <h1>Your related search:-</h1><div class="search-row row"></div><center><button class="btn sx btn-danger">close</button></center></div>
+		</div>
+		<div class="container cont2">
+			
+
+		
+		<div class="container ">
+			<h1 class=""> Top 6 Popular live Videos Related sports!
+			<div class=" row news">
+
+            </div>
+
+
+			<h1>Top 6 Popular  Videos In your Region!</h1>
+			<div class="row related">
+			
+			
+			</div>
+		</div>
+</div>
+
+
+<script>
+
+$(document).ready(function(){
+  
+  
+  
+  $.getJSON("https://www.googleapis.com/youtube/v3/search?q=top%20laughter%20show%20comedy&maxResults=6&order=viewCount&type=video&key=AIzaSyCMlR6u_1n1nvEXH7rw6BpLhS_Rb7Agv8k&part=snippet" function(b) {
+   	for(var i=0 ; i<b.items.length;i++){
+   		var k = document.createElement("IFRAME");
+   		k.src = "https://www.youtube.com/embed/"+b.items[i].id.videoId+"";
+   		k.height="300";
+   		k.width = "300";
+   		k.allow="autoplay; encrypted-media";
+   		k.frameborder="0";
+   		k.setAttribute('allowFullScreen', '');
+     console.log(k);
+
+        var div =document.createElement("DIV");
+        
+        console.log(div);
+   		$(".news").append(div);
+   		$(div).addClass("col-lg-4 mt-4");
+   		$(div).append(k);
+         $(div).append("<h4> Title:"+b.items[i].snippet.title+"</h4><h5>Description</h5>"+"<h6>"+b.items[i].snippet.description+"</h6>");
+
+
+   	}
+
+});
+   var regc;
+   var lon;
+   var lat;
+   var sr1c="https://www.youtube.com/embed/";
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(position){
+      lat=position.coords.latitude; 
+	  lon=position.coords.longitude;
+	
+   
+    $.getJSON("https://www.googleapis.com/youtube/v3/search?location="+lat+","+lon+"&locationRadius=900km&maxResults=6&type=video&key=AIzaSyCMlR6u_1n1nvEXH7rw6BpLhS_Rb7Agv8k&part=snippet", function(b) {
+   	for(var i=0 ; i<b.items.length;i++){
+   		var k = document.createElement("IFRAME");
+   		k.src = "https://www.youtube.com/embed/"+b.items[i].id.videoId+"";
+   		k.height="300";
+   		k.width = "300";
+   		k.allow="autoplay; encrypted-media";
+   		k.frameborder="0";
+   		k.setAttribute('allowFullScreen', '');
+     console.log(k);
+
+        var div =document.createElement("DIV");
+        
+        console.log(div);
+   		$(".related").append(div);
+   		$(div).addClass("col-lg-4 mt-4");
+   		$(div).append(k);
+   		$(div).append("<h4> Title:"+b.items[i].snippet.title+"</h4><h5>Description</h5>"+"<h6>"+b.items[i].snippet.description+"</h6>");
+
+
+   	}
+
+});
+
+});
+
+    }
+
+    $(".so").click(function(){
+    	if($(".search").val()==""){
+    		alert("fill any keywoard releted to your search");
+    		reset();
+    		return 0;
+    	}
+ 
+    	var t = $(".search").val();
+         $(".search-row").html("");
+    	$(".cont2").hide();
+    	$(".cont1").show();
+    	$.getJSON("https://www.googleapis.com/youtube/v3/search?q="+t+"&maxResults=12&type=video&key=AIzaSyCMlR6u_1n1nvEXH7rw6BpLhS_Rb7Agv8k&part=snippet", function(b) {
+   	for(var i=0 ; i<b.items.length;i++){
+   		var k = document.createElement("IFRAME");
+   		k.src = "https://www.youtube.com/embed/"+b.items[i].id.videoId+"";
+   		k.height="250";
+   		k.width ="250";
+   		k.allow="autoplay; encrypted-media";
+   		k.frameborder="0";
+   		k.setAttribute('allowFullScreen', '');
+     console.log(k);
+
+        var div =document.createElement("DIV");
+        
+        console.log(div);
+   		$(".search-row").append(div);
+   		$(div).addClass("col-lg-4 mt-4");
+   		$(div).append(k);
+   		$(div).append("<h4> Title:"+b.items[i].snippet.title+"</h4><br><h5>Description</h5>"+"<h6>"+b.items[i].snippet.description.slice(0,55)+"</h6>");
+
+      
+   	}
+   }
+
+);});
+    $(".sx").click(function(){
+    		reset();
+    	
+
+    });
+    	
+    function reset(){
+    	$(".search").val("");
+    	$(".cont1").hide();
+    	$(".cont2").show();
+};
+
+	  
+	});
+	</script>
+    
+
+</body>
+</html>
